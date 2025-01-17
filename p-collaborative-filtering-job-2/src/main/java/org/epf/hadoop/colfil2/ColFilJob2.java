@@ -17,11 +17,7 @@ public class ColFilJob2 {
     public static void main(String[] args) throws Exception {
         String inputPath="";
         String outputPath="";
-
-        if (args.length == 3 && args[0].contains("ColFilJob2")) {
-            inputPath = args[1];
-            outputPath = args[2];
-        } else if (args.length == 2) {
+        if (args.length == 2) {
             inputPath = args[0];
             outputPath = args[1];
         } else {
