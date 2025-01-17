@@ -7,13 +7,11 @@ import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
+import java.io.IOException;
+
 public class ColFilJob1 {
-    public static void main(String[]args){
+    public static void main(String[]args) throws Exception{
         if(args.length != 2){
-            for (int index = 0; index < args.length; ++index)
-            {
-                System.out.println("args[" + index + "]: " + args[index]);
-            }
             System.err.println("Invalid command");
             System.err.println("Usage: ColFilJob <input path> <output path>");
             System.exit(0);

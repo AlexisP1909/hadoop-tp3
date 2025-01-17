@@ -1,16 +1,16 @@
 package org.epf.hadoop.colfil1;
 
+import org.apache.hadoop.io.Text;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.mapreduce.RecordReader;
 import org.apache.hadoop.mapreduce.InputSplit;
 import org.apache.hadoop.mapreduce.TaskAttemptContext;
 import org.apache.hadoop.mapreduce.lib.input.LineRecordReader;
-
 import java.io.IOException;
 
-public class RelationshipRecordReader extends RecordReader<Text, Relationship> {
+public class RelationshipRecordReader extends RecordReader<LongWritable, Relationship> {
     private LineRecordReader lineRecordReader = new LineRecordReader();
-    private Text currentKey = new LongWritable();
+    private LongWritable currentKey = new LongWritable();
     private Relationship currentValue = new Relationship();
 
     @Override
@@ -35,10 +35,14 @@ public class RelationshipRecordReader extends RecordReader<Text, Relationship> {
 
             // Read line data and update current value
             // HINT: What methods can you call on `lineRecordReader`?
-            String line[] = lineRecordReader.getCurrentValue().toString().split("<->");//["a","b,timestamp"]
+
+            //["a","b,timestamp"]
+            String[] line = lineRecordReader.getCurrentValue().toString().split("<->");
             if (line.length == 2) {
                 line[0] = line[0].trim();
-                line[1] = line[1].split(",")[0].trim(); //to get rid of the timestamp
+                if (line[1].contains(",")){         
+                    line[1] = line[1].split(",")[0].trim(); //to get rid of the timestamp
+                }
                 currentValue.setId1(line[0]);
                 currentValue.setId2(line[1]);
             }
