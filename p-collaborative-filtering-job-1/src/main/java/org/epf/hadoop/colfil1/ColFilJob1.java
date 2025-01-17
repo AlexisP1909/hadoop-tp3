@@ -2,6 +2,32 @@ package org.epf.hadoop.colfil1;
 
 public class ColFilJob1 {
     public static void main(String[]args){
-        System.out.println("Your code here");
-    }
+        if(args.length != 2){
+            for (int index = 0; index < args.length; ++index)
+            {
+                System.out.println("args[" + index + "]: " + args[index]);
+            }
+            System.err.println("Invalid command");
+            System.err.println("Usage: ColFilJob <input path> <output path>");
+            System.exit(0);
+        }
+
+        Configuration conf = new Configuration();
+        Job job = Job.getInstance(conf, "Collaborative Filtering Job 1");
+
+        job.setJarByClass(ColFilJob1.class);
+        job.setMapperClass(RelationshipMapper.class);
+        job.setReducerClass(RelationshipReducer.class);
+
+        job.setInputFormatClass(RelationshipInputFormat.class);
+
+        job.setOutputKeyClass(Text.class);
+        job.setOutputValueClass(Text.class);
+
+        FileInputFormat.addInputPath(job, new Path(args[0]));
+        FileOutputFormat.setOutputPath(job, new Path(args[1]));
+
+        job.setNumReduceTasks(2);
+
+        System.exit(job.waitForCompletion(true) ? 0 : 1);    }
 }
