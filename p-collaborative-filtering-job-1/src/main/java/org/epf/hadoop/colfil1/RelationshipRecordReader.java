@@ -8,9 +8,9 @@ import org.apache.hadoop.mapreduce.lib.input.LineRecordReader;
 
 import java.io.IOException;
 
-public class RelationshipRecordReader extends RecordReader<LongWritable, Relationship> {
+public class RelationshipRecordReader extends RecordReader<Text, Relationship> {
     private LineRecordReader lineRecordReader = new LineRecordReader();
-    private LongWritable currentKey = new LongWritable();
+    private Text currentKey = new LongWritable();
     private Relationship currentValue = new Relationship();
 
     @Override

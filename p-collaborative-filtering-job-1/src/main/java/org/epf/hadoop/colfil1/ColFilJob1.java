@@ -1,5 +1,12 @@
 package org.epf.hadoop.colfil1;
 
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Job;
+import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
+import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+
 public class ColFilJob1 {
     public static void main(String[]args){
         if(args.length != 2){
