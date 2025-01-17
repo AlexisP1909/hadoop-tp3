@@ -1,0 +1,36 @@
+# Step-by-Step Instructions for Docker Setup and HDFS Operations
+
+## 1. Navigate to the `deploy` directory
+```powershell
+cd deploy
+```
+
+## 2. Build the Docker image from the Dockerfile in the `deploy` directory
+```powershell
+docker build -t hadoop-tp3 .
+```
+
+## 3. Go back to the previous directory
+```powershell
+cd ..
+```
+
+## 4. Run the Docker container with the specified ports and volumes
+```powershell
+docker run -d -p 8088:8088 -p 9870:9870 -p 9864:9864 -v ${PWD}\data:/data -v ${PWD}\jars:/jars --rm --name=pouillieute-tp-note hadoop-tp3:latest
+```
+
+## 5. Access the container with an interactive shell
+```powershell
+docker exec -it pouillieute-tp-note bash
+```
+
+## 6. Create the `/relationships` directory in HDFS
+```bash
+hdfs dfs -mkdir -p /relationships
+```
+
+## 7. Upload the `data.txt` file from the mounted volume to HDFS
+```bash
+hdfs dfs -put /data/relationships/data.txt /relationships/
+```
