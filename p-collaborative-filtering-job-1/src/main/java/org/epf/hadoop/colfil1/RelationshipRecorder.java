@@ -35,10 +35,10 @@ public class RelationshipRecordReader extends RecordReader<LongWritable, Relatio
 
             // Read line data and update current value
             // HINT: What methods can you call on `lineRecordReader`?
-            String line[] = lineRecordReader.getCurrentValue().toString().split("<->");//["a","b,20240924220740"]
+            String line[] = lineRecordReader.getCurrentValue().toString().split("<->");//["a","b,timestamp"]
             if (line.length == 2) {
                 line[0] = line[0].trim();
-                line[1] = line[1].split(",")[0].trim(); //to get rid of the ",20240924220740"
+                line[1] = line[1].split(",")[0].trim(); //to get rid of the timestamp
                 currentValue.setId1(line[0]);
                 currentValue.setId2(line[1]);
             }
