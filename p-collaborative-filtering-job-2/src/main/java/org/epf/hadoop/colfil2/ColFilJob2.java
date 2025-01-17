@@ -15,8 +15,8 @@ import org.apache.hadoop.conf.Configuration;
 public class ColFilJob2 {
  
     public static void main(String[] args) throws Exception {
-        String inputPath;
-        String outputPath;
+        String inputPath="";
+        String outputPath="";
 
         if (args.length == 3 && args[0].contains("ColFilJob2")) {
             inputPath = args[1];
@@ -26,24 +26,24 @@ public class ColFilJob2 {
             outputPath = args[1];
         } else {
             System.err.println("Usage: ColFilJob2 <input path> <output path>");
-            System.err.println("Arguments reçus : " + args.length);
+            System.err.println("Arguments received : " + args.length);
             for (int i = 0; i < args.length; i++) {
                 System.err.println("Arg[" + i + "] : " + args[i]);
             }
-            return -1;
+            System.exit(0);
         }
 
         System.out.println("Using input path: " + inputPath);
         System.out.println("Using output path: " + outputPath);
 
-        Configuration conf = getConf();
-        Job job = Job.getInstance(conf, "Job2: Common Friends Counter");
-        job.setJarByClass(getClass());
+        Configuration conf = new Configuration();
+        Job job = Job.getInstance(conf, "Job2: Shared Friends Counter");
+        job.setJarByClass(ColFilJob2.class);
 
         job.setInputFormatClass(TextInputFormat.class);
 
-        job.setMapperClass(CommonRelationshipMapper.class);
-        job.setReducerClass(CommonRelationshipReducer.class);
+        job.setMapperClass(SharedRelationshipsMapper.class);
+        job.setReducerClass(SharedRelationshipsReducer.class);
 
         job.setMapOutputKeyClass(UserPair.class);
         job.setMapOutputValueClass(IntWritable.class);
@@ -56,6 +56,6 @@ public class ColFilJob2 {
         FileInputFormat.addInputPath(job, new Path(inputPath));
         FileOutputFormat.setOutputPath(job, new Path(outputPath));
 
-        return job.waitForCompletion(true) ? 0 : 1;
+        System.exit(job.waitForCompletion(true) ? 0 : 1);
     }
 }

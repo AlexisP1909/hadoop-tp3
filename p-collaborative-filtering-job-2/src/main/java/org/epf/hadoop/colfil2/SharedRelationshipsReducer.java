@@ -4,7 +4,8 @@ import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;
 import java.io.IOException;
-public class SharedRelationshipsReducer {
+public class SharedRelationshipsReducer
+    extends Reducer<UserPair, IntWritable, Text, IntWritable>  {
     @Override
         protected void reduce(UserPair key, Iterable<IntWritable> values, Context context) throws IOException, InterruptedException {
             int nbSharedRelationships = 0;
@@ -17,7 +18,7 @@ public class SharedRelationshipsReducer {
                 }
                 nbSharedRelationships += value.get();//else +1 shared friend
             }
-        if (!areDirectFriends && sum > 0) {
-            context.write(new Text(key.ToString()), new IntWritable(nbSharedRelationships));}
+        if (!areFriends && nbSharedRelationships > 0) {
+            context.write(new Text(key.toString()), new IntWritable(nbSharedRelationships));}
         }   
 }
