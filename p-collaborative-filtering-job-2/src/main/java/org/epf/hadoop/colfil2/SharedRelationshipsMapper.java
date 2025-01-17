@@ -13,6 +13,9 @@ public class SharedRelationshipsMapper extends Mapper<LongWritable, Text, UserPa
     protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
         // bob a,b,c,d...
         String[] line = value.toString().split(" ");
+        if (line.length < 2) {
+            return;
+        }
         String user = line[0];
         List<String> friends = Arrays.asList(line[1].split(","));
         for (int i = 0; i < friends.size(); i++) {

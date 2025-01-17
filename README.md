@@ -25,6 +25,6 @@ hadoop jar /jars/tpfinal-alexis_pouillieute_job1.jar /data/relationships/data.tx
 hdfs dfs -cat /output/job1/part-r-00001
 ```
 ```bash
-hadoop jar /jars/tpfinal-alexis_pouillieute_job2.jar /data/relationships/data.txt /output/job2
+hadoop jar /jars/tpfinal-alexis_pouillieute_job2.jar /output/job1 /output/job2
 hdfs dfs -cat /output/job2/part-r-00001
 ```
