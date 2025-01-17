@@ -33,9 +33,15 @@ public class RelationshipRecordReader extends RecordReader<LongWritable, Relatio
             // Read line number from `lineRecordReader` and update current key
             currentKey.set(lineRecordReader.getCurrentKey().get());
 
-            // TODO: Your code here
             // Read line data and update current value
             // HINT: What methods can you call on `lineRecordReader`?
+            String line[] = lineRecordReader.getCurrentValue().toString().split("<->");//["a","b,20240924220740"]
+            if (line.length == 2) {
+                line[0] = line[0].trim();
+                line[1] = line[1].split(",")[0].trim(); //to get rid of the ",20240924220740"
+                currentValue.setId1(line[0]);
+                currentValue.setId2(line[1]);
+            }
         }
         return hasNext;
     }
