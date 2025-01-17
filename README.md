@@ -17,6 +17,10 @@ docker exec -it pouillieute-tp-note bash
 ```
 
 ```bash
-hdfs dfs -mkdir -p /relationships
+hdfs dfs -mkdir -p /data/relationships
 hdfs dfs -put /data/relationships/data.txt /relationships/
+```
+```bash
+hadoop jar /jars/tpfinal-alexis_pouillieute_job1.jar /data/relationships/data.txt /output/job1
+hdfs dfs -cat /output/job1/part-r-00001
 ```
