@@ -60,4 +60,18 @@ public class UserPair implements WritableComparable<UserPair> {
         // You might need this method elsewhere in the code for this job.
         return user2.toString();
     }
+        @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserPair userPair = (UserPair) o;
+        return user1.equals(userPair.user1) && user2.equals(userPair.user2);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = user1.hashCode();
+        result = 31 * result + user2.hashCode();
+        return result;
+    }
 }

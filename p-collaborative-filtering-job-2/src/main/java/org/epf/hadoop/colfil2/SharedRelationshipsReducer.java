@@ -7,7 +7,8 @@ import java.io.IOException;
 public class SharedRelationshipsReducer
     extends Reducer<UserPair, IntWritable, Text, IntWritable>  {
     @Override
-        protected void reduce(UserPair key, Iterable<IntWritable> values, Context context) throws IOException, InterruptedException {
+        protected void reduce(UserPair key, Iterable<IntWritable> values, Context context) 
+        throws IOException, InterruptedException {
             int nbSharedRelationships = 0;
             boolean areFriends = false;
 

@@ -12,7 +12,7 @@ public class SharedRelationshipsMapper extends Mapper<LongWritable, Text, UserPa
     @Override
     protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
         // bob a,b,c,d...
-        String[] line = value.toString().split(" ");
+        String[] line = value.toString().split("\\s+");
         if (line.length < 2) {
             return;
         }
@@ -25,8 +25,7 @@ public class SharedRelationshipsMapper extends Mapper<LongWritable, Text, UserPa
             }
         }
         for (String friend : friends) {
-            UserPair pair = new UserPair(user, friend);
-            context.write(pair, new IntWritable(-1)); // Bob is related to them (they are already friends so we cancel out the +1 they could get elsewhere)
+            context.write(new UserPair(user, friend), new IntWritable(-1)); // Bob is related to them (they are already friends so we cancel out the +1 they could get elsewhere)
         }
     }
 }

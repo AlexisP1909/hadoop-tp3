@@ -11,30 +11,34 @@ import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
 import org.apache.hadoop.conf.Configuration;
-   
-public class ColFilJob2 {
- 
-    public static void main(String[] args) throws Exception {
-        String inputPath="";
-        String outputPath="";
-        if (args.length == 2) {
+
+public class ColFilJob2 extends Configured implements Tool {
+    @Override
+    public int run(String[] args) throws Exception {
+        String inputPath;
+        String outputPath;
+
+        if (args.length == 3 && args[0].contains("ColFilJob2")) {
+            inputPath = args[1];
+            outputPath = args[2];
+        } else if (args.length == 2) {
             inputPath = args[0];
             outputPath = args[1];
         } else {
             System.err.println("Usage: ColFilJob2 <input path> <output path>");
-            System.err.println("Arguments received : " + args.length);
+            System.err.println("Arguments reçus : " + args.length);
             for (int i = 0; i < args.length; i++) {
                 System.err.println("Arg[" + i + "] : " + args[i]);
             }
-            System.exit(0);
+            return -1;
         }
 
         System.out.println("Using input path: " + inputPath);
         System.out.println("Using output path: " + outputPath);
 
-        Configuration conf = new Configuration();
-        Job job = Job.getInstance(conf, "Job2: Shared Friends Counter");
-        job.setJarByClass(ColFilJob2.class);
+        Configuration conf = getConf();
+        Job job = Job.getInstance(conf, "Job2: Common Friends Counter");
+        job.setJarByClass(getClass());
 
         job.setInputFormatClass(TextInputFormat.class);
 
@@ -52,6 +56,12 @@ public class ColFilJob2 {
         FileInputFormat.addInputPath(job, new Path(inputPath));
         FileOutputFormat.setOutputPath(job, new Path(outputPath));
 
-        System.exit(job.waitForCompletion(true) ? 0 : 1);
+        return job.waitForCompletion(true) ? 0 : 1;
+    }
+
+    public static void main(String[] args) throws Exception {
+        System.out.println("Démarrage de ColFilJob2");
+        int exitCode = ToolRunner.run(new Configuration(), new ColFilJob2(), args);
+        System.exit(exitCode);
     }
 }
