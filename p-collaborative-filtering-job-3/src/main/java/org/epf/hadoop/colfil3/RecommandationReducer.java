@@ -6,40 +6,37 @@ import java.io.IOException;
 import java.util.*;
 public class RecommandationReducer
 extends Reducer<Text, RelationRecommandation, Text, Text> {
-    private static final int N_Best = 5; // Define the N_Best variable
+    private static final int N_Best = 5; // Define the N_Best 
 
     @Override
     protected void reduce(Text key, Iterable<RelationRecommandation> values, Context context)
     throws IOException,InterruptedException{
-        PriorityQueue<RelationRecommandation> topRecommendations = new PriorityQueue<>(
-            Comparator.comparingInt(RelationRecommandation::getNbSharedFriends)
-                    .thenComparing(RelationRecommandation::getFriendRecommended)
-        );
+        TreeSet<RelationRecommandation> topRecommendations = new TreeSet<>((a, b) -> {
+            int compare = -Integer.compare(a.getNbSharedFriends(), b.getNbSharedFriends());
+            if (compare != 0) return compare;
 
-        // Collect all recommendations
+            return a.getFriendRecommended().compareTo(b.getFriendRecommended());
+        });
         for (RelationRecommandation val : values) {
-            // Add the current recommendation to the heap
-            topRecommendations.add(val);
+            RelationRecommandation copy = new RelationRecommandation(
+                    val.getUser(),
+                    val.getFriendRecommended(),
+                    val.getNbSharedFriends()
+            );
+            topRecommendations.add(copy);
 
-            // If the heap size exceeds N_Best, remove the recommendation with the least common friends
             if (topRecommendations.size() > N_Best) {
-                topRecommendations.poll();
+                topRecommendations.pollLast();
             }
         }
-
-        // Build the list of recommendations
-        List<String> recommendations = new ArrayList<>(N_Best);
-        while (!topRecommendations.isEmpty()) {
-            RelationRecommandation rec = topRecommendations.poll();
-            recommendations.add(String.format("%s(%d)",
-                    rec.getFriendRecommended(), rec.getNbSharedFriends()));
+        if (!topRecommendations.isEmpty()) {
+            List<String> recommendations = new ArrayList<>();
+            for (RelationRecommandation rec : topRecommendations) {
+                recommendations.add(String.format("%s(%d)",
+                        rec.getFriendRecommended(), rec.getNbSharedFriends()));
+            }
+            context.write(key, new Text(String.join(",", recommendations)));
         }
-        // Sort the recommendations in descending order of shared friends
-        recommendations.sort((a, b) -> {
-            int sharedFriendsA = Integer.parseInt(a.split("\\(")[1].replace(")", ""));
-            int sharedFriendsB = Integer.parseInt(b.split("\\(")[1].replace(")", ""));
-            return -Integer.compare(sharedFriendsA, sharedFriendsB);
-        });
-        context.write(key, new Text(String.join(",", recommendations)));
     }
 }
+
