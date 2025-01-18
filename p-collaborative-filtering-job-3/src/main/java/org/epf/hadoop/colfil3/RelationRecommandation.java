@@ -4,7 +4,7 @@ import org.apache.hadoop.io.WritableComparable;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
-public class RelationRecommandation implements WritableComparable<UserRecommendation> {
+public class RelationRecommandation implements WritableComparable<RelationRecommandation> {
     private String user;
     private String friendRecommended;
     private int nbSharedFriends;
@@ -47,5 +47,12 @@ public class RelationRecommandation implements WritableComparable<UserRecommenda
     @Override
     public int hashCode() {
         return user.hashCode() + friendRecommended.hashCode() + nbSharedFriends;
+    }
+    @Override
+    public int compareTo(RelationRecommandation o) {
+        int compare = -Integer.compare(this.nbSharedFriends, o.nbSharedFriends);
+        if (compare != 0) return compare;
+
+        return this.friendRecommended.compareTo(o.friendRecommended);
     }
 }

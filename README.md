@@ -9,7 +9,7 @@ cd..
 ```
 
 ```powershell
-docker run -d -p 8088:8088 -p 9870:9870 -p 9864:9864 -v ${PWD}\data:/data -v ${PWD}\jars:/jars --rm --name=pouillieute-tp-note hadoop-tp3:latest
+docker run -d -p 8088:8088 -v ${PWD}\data:/data -v ${PWD}\jars:/jars --rm --name=pouillieute-tp-note hadoop-tp3:latest
 ```
 
 ```powershell
