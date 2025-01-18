@@ -29,6 +29,6 @@ hadoop jar /jars/tpfinal-alexis_pouillieute_job2.jar /output/job1/ /output/job2
 hdfs dfs -cat /output/job2/part-r-00001
 ```
 ```bash
-hadoop jar /jars/hadoop-tp3-collaborativeFiltering-job3-1.0.jar /output/job2 /output/job3
+hadoop jar /jars/tpfinal-alexis_pouillieute_job3.jar /output/job2 /output/job3
 hdfs dfs -cat /output/job3/part-r-00000
 ```
